@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Bounty Dorking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        input, select, button {
+            padding: 10px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Bug Bounty Dorking</h2>
+    <label for="domain">Masukkan Domain:</label>
+    <input type="text" id="domain" placeholder="Contoh: hackerone.com">
+    
+    <label for="bugType">Pilih Jenis Bug:</label>
+    <select id="bugType">
+        <option value='"xss"'>XSS (Cross-Site Scripting)</option>
+        <option value='"sqli"'>SQL Injection (SQLi)</option>
+        <option value='"csrf"'>CSRF (Cross-Site Request Forgery)</option>
+        <option value='"open redirect"'>Open Redirect</option>
+        <option value='"rce"'>Remote Code Execution (RCE)</option>
+        <option value='"ssti"'>Server-Side Template Injection (SSTI)</option>
+        <option value='"xxe"'>XML External Entity (XXE)</option>
+        <option value='"idor"'>Insecure Direct Object Reference (IDOR)</option>
+        <option value='"lfi"'>Local File Inclusion (LFI)</option>
+        <option value='"rfi"'>Remote File Inclusion (RFI)</option>
+        <option value='"ssrf"'>Server-Side Request Forgery (SSRF)</option>
+        <option value='"clickjacking"'>Clickjacking</option>
+        <option value='"misconfiguration"'>Security Misconfiguration</option>
+        <option value='"broken access control"'>Broken Access Control</option>
+        <option value='"broken authentication"'>Broken Authentication</option>
+        <option value='"sensitive data exposure"'>Sensitive Data Exposure</option>
+        <option value='"insecure deserialization"'>Insecure Deserialization</option>
+        <option value='"insufficient logging"'>Insufficient Logging & Monitoring</option>
+        <option value='"insecure csp"'>Insecure Content Security Policy (CSP)</option>
+        <option value='"directory listing"'>Directory Listing Enabled</option>
+        <option value='"hardcoded credentials"'>Hardcoded Credentials</option>
+        <option value='"default credentials"'>Default Credentials</option>
+        <option value='"subdomain takeover"'>Subdomain Takeover</option>
+        <option value='"open bucket"'>Open S3 Bucket / Storage Misconfiguration</option>
+        <option value='"exposed admin panel"'>Exposed Admin Panel</option>
+        <option value='"api key exposure"'>Exposed API Key</option>
+        <option value='"cve"'>Common Vulnerabilities and Exposures (CVE)</option>
+        <option value='"0day"'>0-Day Exploit</option>
+        <option value='"bypass authentication"'>Bypass Authentication</option>
+        <option value='"prototype pollution"'>Prototype Pollution</option>
+        <option value='"race condition"'>Race Condition</option>
+        <option value='"dns takeover"'>DNS Takeover</option>
+        <option value='"csrf token missing"'>CSRF Token Missing</option>
+        <option value='"websocket hijacking"'>WebSocket Hijacking</option>
+        <option value='"jsonp hijacking"'>JSONP Hijacking</option>
+        <option value='"cors misconfiguration"'>CORS Misconfiguration</option>
+    </select>
+
+    <button onclick="searchDork()">Cari</button>
+
+    <script>
+        function searchDork() {
+            var domain = document.getElementById("domain").value;
+            var bugType = document.getElementById("bugType").value;
+            if (domain) {
+                var dorkQuery = `site:${domain} ${bugType}`;
+                var googleSearchURL = `https://www.google.com/search?q=${encodeURIComponent(dorkQuery)}`;
+                window.open(googleSearchURL, "_blank");
+            } else {
+                alert("Masukkan domain terlebih dahulu!");
+            }
+        }
+    </script>
+
+</body>
+</html>
