@@ -38,13 +38,15 @@
 <body>
     <div class="container">
         <h2 class="mb-4">ReportHunt</h2>
+<p class="text-white">ReportHunt helps you find bug bounty reports by searching for specific vulnerabilities across various domains.</p>
+
         <div class="card p-4">
             <div class="mb-3">
-                <label class="form-label">Masukkan Domain:</label>
-                <input type="text" id="domain" class="form-control" placeholder="Contoh: hackerone.com">
+                <label class="form-label">Enter Domain:</label>
+                <input type="text" id="domain" class="form-control" placeholder="Example: hackerone.com">
             </div>
             <div class="mb-3">
-                <label class="form-label">Pilih Jenis Bug:</label>
+                <label class="form-label">Select Bug Type:</label>
                 <select id="bugType" class="form-select">
                     <option value="xss">XSS (Cross-Site Scripting)</option>
                     <option value="sqli">SQL Injection (SQLi)</option>
@@ -108,11 +110,17 @@
                     <option value="Cache Deception">Cache Deception</option>
                 </select>
             </div>
-            <button onclick="searchDork()" class="btn btn-custom w-100">Cari</button>
-            <button onclick="exportCSV()" class="btn btn-secondary w-100 mt-2">Export History</button>
+            <div class="mb-3">
+                <label class="form-label">Choose a Search Engine:</label>
+                <select id="searchEngine" class="form-select">
+                    <option value="google">Google</option>
+                    <option value="bing">Bing</option>
+                    <option value="duckduckgo">DuckDuckGo</option>
+                    <option value="brave">Brave</option>
+                </select>
+            </div>
+            <button onclick="searchDork()" class="btn btn-custom w-100">Search</button>
         </div>
-        <h4 class="mt-4">History Pencarian</h4>
-        <ul id="history" class="list-group"></ul>
     </div>
 
     <script>
@@ -120,32 +128,34 @@
         function searchDork() {
             const domain = document.getElementById("domain").value;
             const bugType = document.getElementById("bugType").value;
+            const searchEngine = document.getElementById("searchEngine").value;
 
             if (domain && bugType) {
                 const query = `site:${domain} "${bugType}"`;
-                const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-                window.open(googleSearchUrl, '_blank');  // Membuka hasil pencarian di tab baru
+                let searchURL = "";
+
+                switch (searchEngine) {
+                    case "google":
+                        searchURL = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+                        break;
+                    case "bing":
+                        searchURL = `https://www.bing.com/search?q=${encodeURIComponent(query)}`;
+                        break;
+                    case "duckduckgo":
+                        searchURL = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+                        break;
+                    case "brave":
+                        searchURL = `https://search.brave.com/search?q=${encodeURIComponent(query)}`;
+                        break;
+                    default:
+                        searchURL = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+                }
+
+                // Membuka hasil pencarian di tab baru
+                window.open(searchURL, '_blank');
             } else {
                 alert("Harap masukkan domain dan pilih jenis bug.");
             }
-        }
-
-        // Fungsi untuk mengekspor history pencarian (contoh)
-        function exportCSV() {
-            const historyList = document.getElementById("history");
-            let csvContent = "Domain,Bug Type\n";
-            const items = historyList.getElementsByTagName("li");
-            
-            for (let item of items) {
-                const text = item.textContent.split(", ");
-                csvContent += `${text[0].split(": ")[1]},${text[1].split(": ")[1]}\n`;
-            }
-            
-            const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = "history.csv";
-            link.click();
         }
     </script>
 
